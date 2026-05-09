@@ -13,9 +13,25 @@
     .head p{margin:0;color:#d1d5db}
     .nav{position:sticky;top:0;z-index:20;padding:10px 0;background:rgba(244,246,251,.96);display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
     .nav a{text-decoration:none;color:#111827;background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:8px 12px;font-size:14px}
+    .nav a.active{background:#111827;color:#fff;border-color:#111827}
     .subject{background:#fff;border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:0 4px 14px rgba(0,0,0,.06)}
     .subject h2{margin:0 0 8px}
-    .search{width:100%;padding:11px;border:2px solid #e5e7eb;border-radius:10px;outline:none;margin-bottom:10px}
+    .search{
+      width:100%;
+      padding:16px 18px;
+      border:3px solid #cbd5e1;
+      border-radius:12px;
+      outline:none;
+      margin-bottom:14px;
+      font-size:18px;
+      font-weight:600;
+      background:#f8fafc;
+    }
+    .search:focus{
+      border-color:#2563eb;
+      background:#fff;
+      box-shadow:0 0 0 4px rgba(37,99,235,.15);
+    }
     .item{background:#fff;border:1px solid #edf2f7;border-left:6px solid var(--c);border-radius:10px;padding:12px;margin-bottom:10px}
     .q{font-weight:600;margin-bottom:7px}
     .a{display:inline-block;background:#ecfdf3;border:1px solid #bbf7d0;color:#14532d;padding:7px 9px;border-radius:8px}
@@ -462,32 +478,58 @@
     function build(){
       const nav = document.getElementById('nav');
       const app = document.getElementById('app');
-      subjects.forEach(s => {
-        const link = document.createElement('a');
-        link.href = '#'+s.id;
-        link.textContent = s.title;
-        nav.appendChild(link);
-      });
-      subjects.forEach(s => {
+      const state = { activeId: subjects[0].id };
+      const searchCache = {};
+
+      function renderNav(){
+        nav.innerHTML = '';
+        subjects.forEach(s => {
+          const btn = document.createElement('a');
+          btn.href = '#';
+          btn.textContent = s.title;
+          if (s.id === state.activeId) btn.classList.add('active');
+          btn.addEventListener('click', function(e){
+            e.preventDefault();
+            state.activeId = s.id;
+            searchCache[s.id] = '';
+            renderNav();
+            renderActiveSubject();
+            window.scrollTo({ top: 0, behavior: 'auto' });
+          });
+          nav.appendChild(btn);
+        });
+      }
+
+      function renderActiveSubject(){
+        const s = subjects.find(x => x.id === state.activeId);
+        app.innerHTML = '';
+
         const sec = document.createElement('section');
         sec.className = 'subject';
         sec.id = s.id;
         sec.style.setProperty('--c', s.color);
+
         const h2 = document.createElement('h2');
         h2.textContent = s.title;
+
         const inp = document.createElement('input');
         inp.className = 'search';
         inp.placeholder = s.placeholder;
+        inp.value = searchCache[s.id] || '';
+
         const list = document.createElement('div');
         const empty = document.createElement('div');
         empty.className = 'empty';
         empty.textContent = 'Khong tim thay cau hoi phu hop.';
+
         function filter(){
           const k = norm(inp.value.trim());
+          searchCache[s.id] = inp.value;
           const out = !k ? s.items : s.items.filter(x => norm(x.q).includes(k) || norm(x.a).includes(k));
           renderList(list, out);
           empty.style.display = out.length ? 'none' : 'block';
         }
+
         inp.addEventListener('input', filter);
         sec.appendChild(h2);
         sec.appendChild(inp);
@@ -495,7 +537,10 @@
         sec.appendChild(empty);
         app.appendChild(sec);
         filter();
-      });
+      }
+
+      renderNav();
+      renderActiveSubject();
     }
     build();
   </script>
