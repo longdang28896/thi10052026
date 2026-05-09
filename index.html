@@ -1,132 +1,361 @@
 <!DOCTYPE html>
 <html lang="vi">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Hệ Thống Ôn Tập Tổng Hợp</title>
-    <style>
-        :root {
-            --primary: #2c3e50;
-            --accent: #3498db;
-            --bg: #f4f7f6;
-            --white: #ffffff;
-        }
-
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background-color: var(--bg);
-            margin: 0;
-            padding: 0;
-            color: #333;
-        }
-
-        .header-panel {
-            background: var(--primary);
-            color: white;
-            padding: 20px;
-            text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.2);
-        }
-
-        /* Thanh menu chọn môn */
-        .tab-container {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: center;
-            gap: 10px;
-            padding: 15px;
-            background: #ecf0f1;
-            position: sticky;
-            top: 0;
-            z-index: 1000;
-            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
-        }
-
-        .tab-button {
-            padding: 12px 20px;
-            border: none;
-            border-radius: 5px;
-            background: #bdc3c7;
-            color: #2c3e50;
-            font-weight: bold;
-            cursor: pointer;
-            transition: all 0.3s;
-            font-size: 0.9rem;
-            flex: 1;
-            min-width: 150px;
-            max-width: 250px;
-        }
-
-        .tab-button.active {
-            background: var(--accent);
-            color: white;
-            box-shadow: 0 3px 0 #2980b9;
-            transform: translateY(-2px);
-        }
-
-        /* Khu vực tìm kiếm */
-        .search-section {
-            max-width: 800px;
-            margin: 20px auto;
-            padding: 0 15px;
-        }
-
-        #searchInput {
-            width: 100%;
-            padding: 15px;
-            border: 2px solid #ddd;
-            border-radius: 8px;
-            font-size: 1rem;
-            outline: none;
-        }
-
-        #searchInput:focus { border-color: var(--accent); }
-
-        /* Danh sách câu hỏi */
-        .content-area {
-            max-width: 800px;
-            margin: 0 auto 50px auto;
-            padding: 0 15px;
-        }
-
-        .quiz-card {
-            background: var(--white);
-            padding: 20px;
-            border-radius: 10px;
-            margin-bottom: 15px;
-            border-left: 5px solid var(--accent);
-            box-shadow: 0 2px 5px rgba(0,0,0,0.05);
-        }
-
-        .q-text { font-weight: bold; display: block; margin-bottom: 10px; color: #2c3e50; }
-        .a-text { color: #27ae60; background: #e8f5e9; padding: 8px 12px; border-radius: 5px; display: inline-block; font-weight: 500; }
-
-        .footer-info { text-align: center; color: #7f8c8d; font-size: 0.8rem; margin-top: 30px; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tong hop 4 mon</title>
+  <style>
+    *{box-sizing:border-box}
+    body{margin:0;font-family:'Segoe UI',Tahoma,Geneva,Verdana,sans-serif;background:#f4f6fb;color:#1f2937}
+    .wrap{max-width:1100px;margin:0 auto;padding:20px}
+    .head{background:#111827;color:#fff;padding:18px;border-radius:12px}
+    .head h1{margin:0 0 6px}
+    .head p{margin:0;color:#d1d5db}
+    .nav{position:sticky;top:0;z-index:20;padding:10px 0;background:rgba(244,246,251,.96);display:flex;gap:8px;flex-wrap:wrap;margin:10px 0}
+    .nav a{text-decoration:none;color:#111827;background:#fff;border:1px solid #e5e7eb;border-radius:999px;padding:8px 12px;font-size:14px}
+    .subject{background:#fff;border-radius:12px;padding:14px;margin-bottom:14px;box-shadow:0 4px 14px rgba(0,0,0,.06)}
+    .subject h2{margin:0 0 8px}
+    .search{width:100%;padding:11px;border:2px solid #e5e7eb;border-radius:10px;outline:none;margin-bottom:10px}
+    .item{background:#fff;border:1px solid #edf2f7;border-left:6px solid var(--c);border-radius:10px;padding:12px;margin-bottom:10px}
+    .q{font-weight:600;margin-bottom:7px}
+    .a{display:inline-block;background:#ecfdf3;border:1px solid #bbf7d0;color:#14532d;padding:7px 9px;border-radius:8px}
+    .empty{display:none;color:#6b7280;font-style:italic}
+  </style>
 </head>
 <body>
-
-<div class="header-panel">
-    <h2 id="currentSubjectTitle">Hệ Thống Ôn Tập</h2>
-</div>
-
-<div class="tab-container">
-    <button class="tab-button active" onclick="switchSubject('web')">THIẾT KẾ WEB</button>
-    <button class="tab-button" onclick="switchSubject('os')">HỆ ĐIỀU HÀNH</button>
-    <button class="tab-button" onclick="switchSubject('httt')">PHÂN TÍCH HTTT</button>
-    <button class="tab-button" onclick="switchSubject('security')">BẢO MẬT DỮ LIỆU</button>
-</div>
-
-<div class="search-section">
-    <input type="text" id="searchInput" placeholder="Tìm kiếm nhanh..." onkeyup="filterData()">
-</div>
-
-<div class="content-area" id="quizContent"></div>
-
-<script>
-    // TỔNG HỢP DỮ LIỆU 4 MÔN
-    const allData = {
-        web: [
+  <div class="wrap">
+    <header class="head">
+      <h1>Tra cuu tong hop 4 mon</h1>
+      
+    </header>
+    <nav class="nav" id="nav"></nav>
+    <main id="app"></main>
+  </div>
+  <script>
+    const subjects = [
+      { id: 'an-ninh', title: 'An Ninh & Bao Mat Du Lieu', color: '#c62828', placeholder: 'Tim kiem mon An Ninh...', items: [
+        {q: "Khi một công ty xác định an ninh cần đảm bảo dữ liệu đúng đắn, hạn chế mất thông tin thì tài sản là?", a: "Kiểm soát truy cập đến các thiết bị"},
+        {q: "Bộ phận nào không thuộc CIA Triad (An ninh mạng tổng quát)?", a: "Các tệp cơ sở dữ liệu"},
+        {q: "Thành phần nào không phải bộ phận của an ninh mạng trong mô hình phân cấp?", a: "Tường lửa"},
+        {q: "Triển khai Defend in Depth, thành phần nào thuộc chế độ defend?", a: "Firewall"},
+        {q: "Khái niệm đúng trong lĩnh vực an ninh:", a: "Quản lý và triển khai an ninh để hạn chế truy cập trái phép"},
+        {q: "Điểm yếu nhất đe dọa an toàn thông tin?", a: "Quy trình và con người"},
+        {q: "Defend in Depth, thành phần nào thuộc deterence?", a: "Nội quy và các quy định"},
+        {q: "Defend in Depth, thành phần nào thuộc detection?", a: "Tất cả các phương án (Camera CCTV, Báo cháy, Điện dự phòng)"},
+        {q: "Tính chất không thuộc CIA Triad?", a: "Tính xác thực, nhận dạng"},
+        {q: "Mục tiêu của an toàn thông tin tổng quát trong CIA Triad?", a: "Tính bí mật, tính toàn vẹn, tính sẵn sàng"},
+        {q: "Đảm bảo thông tin dữ liệu đúng đắn, hạn chế mất mát là tính chất gì?", a: "Tính toàn vẹn"},
+        {q: "Khi triển khai chiến lược an ninh, cần xác định vấn đề gì đầu tiên?", a: "Tài sản"},
+        {q: "Để kiểm soát tính đúng đắn của tin tức mạng cần:", a: "Tất cả các phương án (Thay đổi dữ liệu, Người dùng, Truy cập)"},
+        {q: "Chế độ Defend in Depth thường dùng cho kiến trúc mạng nào?", a: "Hệ thống mạng thương mại của ngân hàng, doanh nghiệp"},
+        {q: "Phương pháp không dùng để quản lý an ninh hệ thống mạng?", a: "Khôi phục thông tin"},
+        {q: "Tính riêng tư của thông điệp khi trao đổi là?", a: "Confidentiality"},
+        {q: "Ba điểm cần chú trọng trong quản lý an ninh là?", a: "Con người, quy định, công nghệ"},
+        {q: "Trong chế độ 3Ds, chế độ nào thường bị xem nhẹ?", a: "Chế độ hạn chế, cảnh báo truy cập trái phép"},
+        {q: "Đảm bảo dịch vụ luôn được phép truy cập bởi người dùng hợp pháp là?", a: "Tính sẵn sàng"},
+        {q: "Chế độ Defend in Depth cần đảm bảo 3 chức năng bắt buộc nào?", a: "Ngăn chặn, phát hiện, báo cáo thiệt hại"},
+        {q: "Thế nào là người chủ sở hữu hợp pháp thông tin?", a: "Người tạo ra thông tin"},
+        {q: "Một hệ thống mạng được gọi là an toàn khi:", a: "Cho phép truy cập theo cách thức có thể quản lý"},
+        {q: "EAP (Extensible Authentication protocol) thường dùng cho:", a: "Mạng không dây (wireless)"},
+        {q: "Trong chế độ đường hầm (tunnel mode) IPSec bảo vệ:", a: "Toàn bộ gói IP"},
+        {q: "Tấn công làm tài nguyên không thể truy cập bởi người dùng hợp pháp?", a: "Tấn công từ chối dịch vụ (DDOS)"},
+        {q: "Loại tấn công không thuộc loại mã độc tự động?", a: "Dò mật khẩu"},
+        {q: "Lưu trữ cục bộ và so sánh là phương pháp xác thực loại nào?", a: "Sử dụng ID và Password"},
+        {q: "Mối nguy hay điểm yếu trong hệ thống sẽ bị khai thác gọi là?", a: "Rủi ro (risks)"},
+        {q: "Loại tấn công thuộc mã độc tự động?", a: "Phần mềm gián điệp"},
+        {q: "Kẽ hở nào tiềm tàng nhiều nguy cơ nhất?", a: "Con người"},
+        {q: "Có điểm yếu có thể bị khai thác gọi là?", a: "Kẽ hở trên hệ thống (vulnerabilities)"},
+        {q: "Khi nghe lén, thông tin nào dễ truy nhập trong IP Header?", a: "Địa chỉ nguồn và địa chỉ đích"},
+        {q: "WPA2 dùng để đảm bảo an ninh cho mạng nào?", a: "Wi-fi"},
+        {q: "Kẽ hở thông thường trong hệ điều hành mạng?", a: "Tất cả phương án (Truy cập từ xa, Tài khoản người dùng...)"},
+        {q: "Thuật toán đảm bảo an ninh mạng Wifi hiện nay?", a: "TKIP và EAP"},
+        {q: "Cách xử lý thư rác đúng nhất?", a: "Đưa vào bộ lọc thư rác"},
+        {q: "DNS nhận và dùng thông tin sai từ nguồn không có quyền?", a: "DNS spoofing"},
+        {q: "Đảm bảo an ninh khi dùng phần mềm IM (nhắn tin)?", a: "Cập nhật phần mềm IM khi có phiên bản mới nhất"},
+        {q: "Ipsec cung cấp an ninh ở tầng nào?", a: "Network layer"},
+        {q: "Xác thực định danh bằng certificates dùng hệ thống nào?", a: "Mã hóa khóa bất đối xứng"},
+        {q: "PGP mã hóa dữ liệu bằng thuật toán mã hóa khối:", a: "International data encryption"},
+        {q: "Khái niệm về sâu máy tính (worms)?", a: "Lây nhiễm qua mạng, không cần gắn vào tệp bị lây nhiễm"},
+        {q: "Loại không phải mã độc tự động (Viruses, Trojan, Worms)?", a: "Hash (Hàm băm)"},
+        {q: "Phương pháp không phải xác thực định danh?", a: "Sử dụng Siri và Cotana"},
+        {q: "Tệp tài khoản trên hệ thống thường mã hóa thành phần nào?", a: "Password"},
+        {q: "Network layer firewall làm việc như:", a: "Bộ lọc gói tin"},
+        {q: "Phương pháp không phải xác thực Username/Password?", a: "Passport"},
+        {q: "Thuật toán mã hóa hiện đại chống thám mã bằng:", a: "Nhiều vòng lặp"},
+        {q: "Phương pháp không phải mã thay thế đa hình (polyalphabetic)?", a: "Caesar"},
+        {q: "Nguyên lý thay đổi ký tự trong thông điệp rõ thành thông điệp mã?", a: "Mã thay thế"},
+        {q: "Giải mã Caesar C=HQFUBSWHG WHAW?", a: "ENCRYPTED TEXT"},
+        {q: "Nguyên lý mã hóa ký tự đơn nào để lại dấu vết Anagramming?", a: "Mã chuyển vị"},
+        {q: "Trong lý thuyết mật mã, khái niệm cipher là?", a: "Thuật toán thực hiện mã hóa và giải mã"},
+        {q: "Tấn công tần suất ký tự áp dụng cho nguyên lý nào?", a: "Tất cả các phương án (Thay thế đơn, Chuyển vị đơn)"},
+        {q: "Số lượng khóa tối đa của thay thế đơn (với N ký tự)?", a: "N!"},
+        {q: "Khái niệm không đúng về thay thế đa hình?", a: "Dòng khóa được lựa chọn bất kỳ mỗi vòng mã hóa"},
+        {q: "Mã hóa ký tự đơn dùng Modulo 26 đơn giản nhất?", a: "Mã dịch chuyển (Caesar)"},
+        {q: "Thông điệp mang tin trong mật mã?", a: "Ngôn ngữ viết"},
+        {q: "Thám mã bằng bộ ký tự xuất hiện nhiều lần?", a: "Thám mã theo tần suất xuất hiện"},
+        {q: "Thám mã đảo chữ (anagraming) dùng để phá nguyên lý nào?", a: "Mã chuyển vị đơn"},
+        {q: "Thông điệp sau khi mã hóa gọi là?", a: "Ciphertext"},
+        {q: "Bảng tần suất Baker-Piper dùng cho?", a: "Chỉ dùng cho tiếng Anh"},
+        {q: "Chuyển từ ciphertext sang plaintext gọi là?", a: "Decryption"},
+        {q: "Số lượng khóa tối đa của chuyển vị đơn?", a: "N!"},
+        {q: "Kỹ thuật giải mã khi không biết thuật toán và khóa?", a: "Cryptanalysis (Thám mã)"},
+        {q: "Ký tự xuất hiện nhiều nhất trong tiếng Anh?", a: "e, t"},
+        {q: "Mã hóa chuyển vị K=LAYER, M=WELCOME TO...?", a: "EETSICOOCYWMEKRONRU!LTWET"},
+        {q: "Không phải mã chuyển vị đa hình (Grills, Rail Fence, DoubleColumn)?", a: "Scytale"},
+        {q: "Thuật toán Caesar thuộc nguyên lý nào?", a: "Mono-alphabetic Cipher (Ký tự đơn)"},
+        {q: "Trong 10 số nguyên dương đầu tiên có bao nhiêu số nguyên tố?", a: "4 (2, 3, 5, 7)"},
+        {q: "Hàm Phi-Euler φ(p) với p là số nguyên tố?", a: "p-1"},
+        {q: "Khái niệm đúng với mã hóa dữ liệu?", a: "Giảm dung lượng lưu trữ dữ liệu (tùy thuật toán)"},
+        {q: "Tìm x: 2^x mod 11 = 10?", a: "5"},
+        {q: "Trong nhóm Zn*, các số có phần tử nghịch đảo là?", a: "Các số nguyên tố cùng nhau với n"},
+        {q: "Hai số nguyên a và b đồng dư modulo n khi:", a: "a mod n = b mod n"},
+        {q: "Thuật toán bình phương modulo thực hiện với:", a: "Số mũ ki từ phải sang trái và số mũ ki nhị phân"},
+        {q: "Số nguyên tố nhỏ nhất?", a: "2"},
+        {q: "Lũy thừa b^e mod n với e âm thực hiện với:", a: "Phần tử nghịch đảo của b"},
+        {q: "GCD (18, 300) = ?", a: "6"},
+        {q: "Nghịch đảo của a trong Zn* là:", a: "a^-1 mod n"},
+        {q: "Nghịch đảo của 37 mod 49?", a: "4"},
+        {q: "Ước số chung lớn nhất ký hiệu là?", a: "d=(a,b)"},
+        {q: "Thuật toán Euclid mở rộng dùng để tìm:", a: "Tất cả các phương án (Nghịch đảo modulo, GCD)"},
+        {q: "Đặc trưng đơn trị của thuật toán?", a: "Với mỗi giá trị đầu vào chỉ có một giá trị đầu ra"},
+        {q: "Số nào thuộc tập hợp số nguyên Zn?", a: "Số 0"},
+        {q: "Độ phức tạp thuật toán xác định bởi?", a: "Thời gian và bộ nhớ"},
+        {q: "Số có thể phân tích thành thừa số nguyên tố là?", a: "Các số nguyên lớn hơn số nguyên tố nhỏ nhất"},
+        {q: "Hai số nguyên tố cùng nhau khi?", a: "Ước số chung lớn nhất của hai số là 1"},
+        {q: "Network-base IDS không phát hiện được loại tấn công nào?", a: "Tải tệp tin"},
+        {q: "Mạng N máy tính, số khóa cần để bảo mật từng cặp?", a: "N(N-1)/2"},
+        {q: "Tấn công vào trao đổi khóa khi 2 bên không xác thực?", a: "Man-in-the-middle-attack"},
+        {q: "Hệ thống mã hóa DES là?", a: "Mã hóa khóa đối xứng"},
+        {q: "Thử vét cạn (Brute force) trung bình thử bao nhiêu khóa?", a: "2^(n-1)"},
+        {q: "Chế độ mã hóa có kích thước không cố định, dùng cho Wifi?", a: "Mã hóa dòng (Stream cipher)"},
+        {q: "Hệ thống mã hóa cài đặt dưới dạng:", a: "Tất cả các phương án (Thuật toán, Phần mềm, Giao diện)"},
+        {q: "DES thực sự sử dụng khóa bao nhiêu bits?", a: "56 bits"},
+        {q: "Giao thức TLS không đảm bảo được tính chất nào?", a: "Tính không thể chối bỏ (Non-repudiation)"},
+        {q: "Thuật toán nào sử dụng chế độ mã hóa dòng?", a: "RC4"},
+        {q: "Số lượng hộp đen S-Box trong DES?", a: "8"},
+        {q: "Network layer firewall phân thành 2 loại:", a: "Stateful và Stateless"},
+        {q: "Mã thay thế phân thành 2 loại chính là?", a: "Nguyên lý mã thay thế"},
+        {q: "Thuật toán AES có bao nhiêu loại khóa (128, 192, 256)?", a: "3"},
+        {q: "Khóa không thể dùng cho DES (phải đủ 64bit/16 ký tự hex)?", a: "123456789ABCDEF"},
+        {q: "Chế độ mã hóa DES để lại vết dễ nhận biết?", a: "ECB (Electronic Codebook)"},
+        {q: "Mã hóa hiện đại an toàn cần?", a: "Thuật toán mạnh và khóa mạnh"},
+        {q: "Làm giảm tốc độ mã hóa khối?", a: "Tăng số vòng lặp"},
+        {q: "Hệ phương trình đồng dư tuyến tính thực hiện với dãy số?", a: "Nguyên tố cùng nhau từng cặp"},
+        {q: "Thuật toán khóa không đồng bộ không dùng để mã hóa thông tin?", a: "DSA (Dùng để ký)"},
+        {q: "SHA-1 tạo thông điệp băm kích thước bao nhiêu?", a: "160 bits"},
+        {q: "Trao đổi khóa công khai, đối tác nào không thể xác thực?", a: "Người gửi"},
+        {q: "Nếu D giải mã là số âm thì phải:", a: "Thực hiện với số dương đồng dư mod N"},
+        {q: "Hàm băm không đảm bảo được thông điệp đó đã bị?", a: "Sao chép"},
+        {q: "Số mũ mã hóa E của RSA (theo modulo N)?", a: "Số nguyên tố cùng nhau với (P-1)(Q-1)"},
+        {q: "Để giải mã trong mã hóa khóa công khai ta dùng:", a: "Khóa bí mật"},
+        {q: "Chuẩn mã hóa thay thế cho DES?", a: "AES"},
+        {q: "Thuật toán tăng số lượng khóa cho DES?", a: "TripleDES"},
+        {q: "Mệnh đề sai về lũy thừa modulo?", a: "Phép lũy thừa modulo dễ dàng tìm số mũ e (Đây là bài toán logarit khó)"},
+        {q: "Thuật toán Euclid tìm GCD của:", a: "Hai số nguyên không âm"},
+        {q: "Certificates cho phép xác thực:", a: "Người gửi và người nhận"},
+        {q: "Thuật toán là hệ mã hóa khóa công khai?", a: "DSA"},
+        {q: "Hàm băm dùng trong chữ ký điện tử để:", a: "Tất cả các phương án (Đại diện dữ liệu, Kiểm tra đúng đắn)"},
+        {q: "Trong chữ ký điện tử, việc ký (mã hóa) dùng khóa nào?", a: "Khóa bí mật"},
+        {q: "Trong RSA, p và q phải là:", a: "Số nguyên tố"},
+        {q: "Chuẩn X.509 sử dụng thuật toán mã hóa nào?", a: "RSA"},
+        {q: "DES sử dụng bao nhiêu vòng mã hóa?", a: "16"},
+        {q: "Độ phức tạp tính toán dùng để:", a: "Xác định độ an toàn thuật toán"},
+        {q: "Thông tin ký nhận trong chứng thực điện tử?", a: "Tất cả các đáp án (Plaintext, Khóa công khai...)"},
+        {q: "Đảm bảo xác thực nhận dạng người gửi?", a: "Chữ ký điện tử"},
+        {q: "Hệ thống chữ ký điện tử cần sử dụng?", a: "Hệ mã hóa khóa công khai"},
+        {q: "Root Certificate trong X.509 là của:", a: "Certified Authority (CA)"},
+        {q: "Thành phần không có trong X.509 Certificate?", a: "Issuer Key"},
+        {q: "Mã hóa khóa không đồng bộ sử dụng:", a: "Cặp khóa quan hệ về toán học"}
+    ] },
+      { id: 'he-dieu-hanh', title: 'Nguyen Ly He Dieu Hanh', color: '#0d6efd', placeholder: 'Tim kiem mon He Dieu Hanh...', items: [
+        {q: "Thành phần nào không phải là thành phần của hệ điều hành?", a: "Chương trình điều khiển thiết bị"},
+        {q: "“Mỗi công việc trong hệ thống thường có thể được thực hiện bằng nhiều cách khác nhau và bằng nhiều công cụ khác nhau”, là nguyên lý nào?", a: "Nguyên lí phủ chức năng"},
+        {q: "Hệ điều hành thực hiện ở chế độ?", a: "Độc quyền"},
+        {q: "Hệ điều hành có tính mở về mặt kiến trúc là hệ điều hành được xây dựng dựa trên nguyên lí nào?", a: "Nguyên lí Macroprocessor"},
+        {q: "“Hệ thống không bao giờ tham chiếu trực tiếp tới đối tượng vật lí”, là nguyên lý nào?", a: "Bảng tham số điều khiển"},
+        {q: "“Hệ điều hành được chia thành nhiều phần, các thành phần có thể ghép nối với nhau thông qua đầu vào và đầu ra”, là nguyên lý nào?", a: "Nguyên lí module"},
+        {q: "Chức năng của Hệ điều hành?", a: "Quản lí tài nguyên và giúp cho người sử dụng khai thác chức năng của phần cứng máy tính dễ dàng hơn, hiệu quả hơn"},
+        {q: "Hệ điều hành là:", a: "Cả 3 đáp án đều đúng"},
+        {q: "Tính chất nào không phải tính chất chung của hệ điều hành?", a: "Tính ổn định"},
+        {q: "Hệ điều hành là hệ thống chương trình bao trùm lên máy tính vật lí tạo ra máy logic với những tài nguyên và khả năng mới” là cách nhìn của:", a: "Nhà kĩ thuật"},
+        {q: "Công cụ điều độ cấp thấp được cài đặt ngay vào trong tiến trình được điều độ?", a: "Đúng"},
+        {q: "Tiến trình tồn tại ở mấy trạng thái chính?", a: "3"},
+        {q: "Trong phương pháp kiểm tra và xác lập, IBM PC sử dụng nhóm lệnh BTS (Binary Test and Set) đúng hay sai?", a: "Đúng"},
+        {q: "Công cụ điều độ cấp cao nằm ngoài tiến trình được điều độ, do hệ thống đảm nhiệm?", a: "Đúng"},
+        {q: "Tiến trình là gì (Process)?", a: "Chương trình đang thực hiện"},
+        {q: "Trong kĩ thuật đèn báo (Semaphore), ban đầu biến nguyên S được khởi tạo bằng?", a: "Khả năng phục vụ của tài nguyên găng"},
+        {q: "Điều kiện nào không có trong các điều kiện xảy ra bế tắc?", a: "Phân phối lại tài nguyên"},
+        {q: "Có mấy lớp giải thuật điều độ cấp thấp?", a: "3"},
+        {q: "Giải thuật “Người chủ ngân hàng” thuộc lớp giải thuật chống bế tắc nào sau đây?", a: "Dự báo và tránh"},
+        {q: "Trong lớp giải thuật phòng ngừa, để chống tài nguyên găng ta có thể:", a: "Tất cả các đáp án đều đúng"},
+        {q: "Điều phối FIFO có nghĩa là?", a: "Vào trước ra trước"},
+        {q: "Điều phối SJF là điều phối?", a: "Có thời gian chờ trung bình đạt min"},
+        {q: "Đâu là đặc điểm của thuật giải RR (Round Robin)?", a: "Mọi tiến trình đều kết thúc được"},
+        {q: "Trong xử lý ngắt của IBM PC, ngắt kiểm tra chương trình là?", a: "INT 20"},
+        {q: "Trong máy IBM 360/370 có bao nhiêu loại sự kiện?", a: "7"},
+        {q: "Cơ chế “sự kiện và ngắt” được áp dụng cho các máy tính từ thế hệ thứ mấy?", a: "Thế hệ III"},
+        {q: "Cho bảng thông tin của các tiến trình. Thời gian chờ đợi trung bình theo giải thuật FCFS là?", a: "8.75"},
+        {q: "Trong xử lý ngắt của IBM PC, kích thước một con trỏ ngắt là?", a: "4B"},
+        {q: "Tiến trình yêu cầu một tài nguyên nhưng chưa được đáp ứng... thuộc dạng chuyển trạng thái nào sau đây?", a: "Running-> Blocked"},
+        {q: "Cho bảng thông tin của các tiến trình. Thời gian chờ đợi trung bình theo giải thuật SJF là?", a: "7.75"},
+        {q: "Đâu không phải là đặc điểm của thuật giải SJF (Shortest Job First)?", a: "Dễ dàng dự báo thời điểm phục vụ tiến trình"},
+        {q: "Điều phối SJF có nghĩa là?", a: "Công việc ngắn nhất được xử lý đầu tiên"},
+        {q: "Đâu không phải là đặc điểm của thuật giải FCFS (First Come – First Serve)?", a: "Thời gian chờ trung bình nhỏ"},
+        {q: "Thuật toán nào sau đây là thuật toán có thể điều phối theo nguyên tắc độc quyền?", a: "Tất cả đều đúng"},
+        {q: "Tiến trình song song chỉ tồn tại trong loại hệ điều hành nào?", a: "Đa nhiệm"},
+        {q: "Trong điều phối Round Robin (RR) nếu q quá lớn sẽ dẫn đến?", a: "Giảm khả năng tương tác của hệ thống"},
+        {q: "Nguyên lí phân phối độc quyền thường thích hợp với các hệ xử lí?", a: "Hệ thống xử lí theo lô"},
+        {q: "Quan điểm ưu tiên chọn những tiến trình đã sử dụng CPU ít nhất vì?", a: "Rời khỏi hệ thống sớm nhất"},
+        {q: "Trong xử lý ngắt của IBM PC, ngắt thường trú chương trình là?", a: "INT 27"},
+        {q: "Hệ điều hành nào không có sử dụng dấu cách khi đặt tên file?", a: "MS Dos"},
+        {q: "Phòng đệm vòng tròn có mấy loại phòng đệm?", a: "3"},
+        {q: "Quản lý file theo cấu trúc cây được sử dụng trong hệ điều hành nào?", a: "Unix/Linux"},
+        {q: "Hệ thống quản lý file có nhiệm vụ cung cấp cho người dùng các phương tiện?", a: "Tất cả đáp án đều đúng"},
+        {q: "Phép trao đổi vào/ra của thiết bị ngoại vi dựa trên nguyên lý nào?", a: "Bảng tham số điều khiển"},
+        {q: "Tạo, huỷ, mở, đóng, đọc, ghi … là các tác vụ cần thiết để hệ điều hành?", a: "Quản lí tệp tin"},
+        {q: "Cấu trúc thư mục phân cấp là của hệ thống nào?", a: "UNIX"},
+        {q: "Loại thư mục nào dễ tổ chức và khai thác nhưng gây khó khăn khi đặt tên tập tin không trùng nhau... ?", a: "Thư mục một cấp"},
+        {q: "Đâu là đặc điểm của phòng đệm truy nhập theo địa chỉ?", a: "Không tốn bộ nhớ và thời gian chuyển thông tin trong bộ nhớ"},
+        {q: "Thành phần nào không nằm trong hệ thống quản lý file?", a: "Hệ thống điều khiển ổ đĩa"},
+        {q: "Spool có mấy giai đoạn, ứng với giai đoạn nào?", a: "Khởi tạo, xử lý, kết thúc"},
+        {q: "Quản lý file theo cấu trúc phân cấp được sử dụng trong hệ điều hành nào?", a: "Windows/ MS Dos"},
+        {q: "Cấu trúc thư mục cây là của hệ thống nào?", a: "MS-DOS, IBM-PC"},
+        {q: "Những thiết bị nào sau đây được xếp vào nhóm thiết bị ngoại vi?", a: "Bàn phím, Chuột, Màn hình, Máy in"},
+        {q: "Độ dài tối đa 8 ký tự khi đặt tên file quy định với hệ điều hanh nào?", a: "MS Dos"},
+        {q: "Kích thước một sector thường là bao nhiêu?", a: "512B"},
+        {q: "Kích thước phần tử trong FAT 32?", a: "32b"},
+        {q: "Thiết bị nào sau đây không là thiết bị nhập/xuất tuần tự?", a: "Đĩa"},
+        {q: "Hệ điều hành nào không phải là hệ điều hành đa nhiệm nhiều người dùng?", a: "MS Dos"},
+        {q: "Đâu là đặc điểm của phòng đệm truy nhập theo địa?", a: "Không tốn bộ nhớ và thời gian chuyển thong tin trong bộ nhớ"},
+        {q: "Trong Spool, với mỗi phép trao đổi vào/ra. Hệ thống tạo ra mấy chương trình kênh?", a: "2"},
+        {q: "Unix và Linux là gì?", a: "Hệ điều hành đa nhiệm nhiều người dùng"},
+        {q: "Hệ điều hành nào sau phân biệt chữ thường, hoa đối với tập tin?", a: "MS-DOS, WINDOWS"},
+        {q: "Cấu hình tổ chức hệ thống nhiều processor?", a: "Tất cả các phương án đều đúng"},
+        {q: "Tại một thời điểm, với hệ thống đơn bộ xử lý có thể có tối đa bao nhêu tiến trình ở trạng thái thực hiện?", a: "1"},
+        {q: "Hệ thống đa xử lý đối xứng là?", a: "Mỗi processor chạy độc lập trên một bản sao hệ điều hành như nhau"},
+        {q: "Quan hệ phân cấp chịu trách nhiệm?", a: "Tất cả các phương án đều đúng"},
+        {q: "Quan hệ liên kết linh hoạt?", a: "Processor tổ chức quản lý và thực hiện tiến trình độc lập"},
+        {q: "API (giao diện lập trình ứng dụng) chứa?", a: "Tất cả các phương án đều đúng"},
+        {q: "Nhiệm vụ của Windows API?", a: "Tất cả các phương án đều đúng"},
+        {q: "Hệ điều hành phân tán là?", a: "Là hệ thống tính toán đạt hiệu quả an toàn"},
+        {q: "Cấu trúc hệ điều hành nào tương thích với hệ thống phân tán?", a: "Cấu trúc Server-client"},
+        {q: "Kỹ thuật nào liên lạc trực tiếp giữa hai tiến trình?", a: "Vùng nhớ chia sẻ"},
+        {q: "Kiểu tập tin nào liên quan đến nhập xuất thông qua các thiết bị nhập xuất tuần tự... ?", a: "Tập tin có kí tự đặc biệt"},
+        {q: "Spool có can thiệp vào chương trình người dùng?", a: "Không"},
+        {q: "Phương pháp nhanh nhất để trao đổi thông tin giữa các tiến trình?", a: "Vùng nhớ chia sẻ"},
+        {q: "Với một hệ thống đa chương trình thì bộ nhớ sẽ?", a: "Hệ điều hành và nhiều process"},
+        {q: "Đặc điểm của hệ thống xử lý phân tán?", a: "Tất cả các phương án đều đúng"},
+        {q: "Hệ thống nào dưới đây là hệ thống đa lớp?", a: "WINDOW XP"},
+        {q: "Hệ điều hành thiết kế theo kiểu microkernel có tất cả các đặc trưng sau ngoại trừ?", a: "Giao tiếp giữa client và service provider được thực hiện thông qua cơ chế shared memory"},
+        {q: "Hệ thống nào dưới đây là hệ thống đơn lớp?", a: "MS-DOS"},
+        {q: "Ưu điểm chính của time-sharing system so với multiprogrammed system?", a: "Thời gian đáp ứng (response time) nhỏ hơn"},
+        {q: "Hệ thống đa xử lý có những ưu điểm nào?", a: "Tất cả các phương án đều đúng"}
+    ] },
+      { id: 'pttk', title: 'Phan Tich & Thiet Ke HTTT', color: '#6a1b9a', placeholder: 'Tim kiem mon PTTKHTTT...', items: [
+        {q: "Yêu cầu chủ yếu nhất của tư duy tiếp cận hệ thống là gì ?", a: "Xem xét hệ thống trong tổng thể vốn có của nó cùng với mối liên hệ trong và ngoài"},
+        {q: "Mức độ trừu tượng hóa logic trả lời cho câu hỏi nào?", a: "What?"},
+        {q: "Điều gì khác biệt giữa 2 hướng cấu trúc và đối tượng?", a: "Trạng thái hệ thống (tập trung/phân tán)"},
+        {q: "Quan điểm hướng đối tượng dựa trên?", a: "Các “đối tượng“"},
+        {q: "Tiếp cận hướng cấu trúc hướng vào việc gì?", a: "Cải tiến cấu trúc chương trình dựa trên việc mô-đun hóa"},
+        {q: "Ý tưởng của phương pháp mô hình hóa là nghiên cứu tập trung vào cái gì ?", a: "Đối tượng “tương tự”"},
+        {q: "Mức độ trừu tượng hóa vật lý thể hiện ở điểm nào?", a: "Làm rõ kiến trúc vật lý của hệ thống"},
+        {q: "Cách tiếp cận hướng đối tượng dựa trên ý tưởng nào?", a: "Che dấu thông tin"},
+        {q: "Các phần tử trong một hệ thống có đặc điểm gì ?", a: "Khác nhau hoàn toàn"},
+        {q: "Hệ thống có tính chất gì?", a: "Tính nhất thể"},
+        {q: "Mô hình vòng đời cổ điển có tính chất gì ?", a: "Hệ thống, tuần tự"},
+        {q: "Bản chất của việc phát triển một hệ thống thông tin là?", a: "Là thiết kế lại tổ chức"},
+        {q: "Phát triển một HTTT bắt đầu từ khi nào?", a: "Lập kế hoạch"},
+        {q: "Sơ đồ sai ở đâu ?", a: "Thứ tự các tiến trình"},
+        {q: "Các giai đoạn trung tâm bao gồm các pha nào ?", a: "Phân tích, thiết kế"},
+        {q: "HTTT quản lý có khả năng gì?", a: "Có thể tạo ra thông tin mới"},
+        {q: "Nguyên tắc thiết kế theo chu trình thể hiện ở chỗ nào ?", a: "Có thể theo cấu trúc lặp"},
+        {q: "Hệ thống là gì ?", a: "Hệ thống là tập hợp các phần tử và tập hợp các mối quan hệ, tạo thành một thể thống nhất, sinh ra tính “trồi”."},
+        {q: "Chọn phát biểu đúng về HTTT.", a: "HTTT cần có phương pháp xử lý thông tin"},
+        {q: "Vòng đời phát triển các hệ thống có vai trò gì?", a: "Phương pháp luận"},
+        {q: "Cần xác định mô hình phân tích nào?", a: "Sơ đồ luồng dữ liệu mức đỉnh"},
+        {q: "Chiều mức bất biến trong mô hình không gian phát triển hệ thống?", a: "Mức vật lý, mức logic, mức khái niệm"},
+        {q: "Mã hóa kiểu liệt kê có Ưu điểm gì ?", a: "Đơn giản"},
+        {q: "Mô hình khái niệm dữ liệu sai ở đâu ?", a: "loại và bản số"},
+        {q: "Mã phân đoạn có đặc điểm gì ?", a: "Không nhập nhằng"},
+        {q: "Mối quan hệ sai ở chỗ nào ?", a: "loại (1-1,1-N,N-N) và bản số"},
+        {q: "Mã hóa theo lát có nhược điểm gì ?", a: "Thiếu gợi ý"},
+        {q: "Mã phân cấp có nhược điểm gì ?", a: "có thể bị bão hoà"},
+        {q: "Đặc tả dữ liệu được xem như việc xác định cái gì ?", a: "xác định tên, dạng dữ liệu và tính chất của dữ liệu, không phụ thuộc người sử dụng, không phụ thuộc yêu cầu tìm kiếm"},
+        {q: "Mã hóa theo lát có đặc điểm gì ?", a: "Không nhập nhằng"},
+        {q: "Mối quan hệ sai ở đâu ?", a: "loại và bản số"},
+        {q: "Mã hóa kiểu liệt kê có khuyết điểm gì ?", a: "Không xen được"},
+        {q: "Xác định thực thể đúng ?", a: "HANG1(#mã hàng, tên hàng, đơn vị tính, giá)"},
+        {q: "Mã hóa kiểu liệt kê có đặc điểm gì (đầy đủ)?", a: "Không nhập nhằng, Đơn giản, Thêm phía sau, không xen được, Thiếu tính gợi ý, cần phải có bảng tương ứng"},
+        {q: "Mã phân cấp có đặc tính gì ?", a: "Mở rộng, xen thêm được"},
+        {q: "Một thực thể bao gồm những thành phần nào ?", a: "Tên thực thể, Danh sách thuộc tính, Thuộc tính định danh"},
+        {q: "Các yêu cầu được chia làm các loại nào?", a: "Các yêu cầu chức năng, các yêu cầu phi chức năng"},
+        {q: "Nguyên tắc phân rã cha-con trong sơ đồ phân cấp?", a: "Một cha có nhiều con, một con chỉ thuộc 1 cha"},
+        {q: "Sơ đồ ngữ cảnh sai ở đâu ?", a: "Kho dữ liệu"},
+        {q: "Các phương pháp điều tra truyền thống?", a: "Phiếu điều tra, nghiên cứu tài liệu, quan sát, phỏng vấn"},
+        {q: "Ma trận E_F sai ở đâu?", a: "Tên thực thể"},
+        {q: "Sơ đồ phân cấp chức năng sai ở đâu ?", a: "Quan hệ cha-con"},
+        {q: "Ma trận E_F sai ở đâu (câu 43)?", a: "Tên chức năng"},
+        {q: "Mục đích của quy trình điều tra?", a: "Hỗ trợ mô hình hóa, tiến hành từ trên xuống, lặp đi lặp lại"},
+        {q: "Các phương pháp điều tra hiện đại?", a: "Phương pháp làm bản mẫu, thiết kế ứng dụng liên kết, phát triển ứng dụng nhanh."},
+        {q: "Yêu cầu phi chức năng là hạn chế về:", a: "Các nguồn lực của hệ thống."},
+        {q: "Yêu cầu phi chức năng là đặc tính gì?", a: "Hạn chế hoặc ràng buộc"},
+        {q: "Tách lược đồ HĐ đạt cao nhất là 2NF ?", a: "HĐ1(Số, Ngày, mã Khách) và HĐ2(mã khách, tên khách, Địa chỉ)"},
+        {q: "Tách lược đồ HĐ(Số, mã hàng...) đạt 2NF ?", a: "HĐ1(mã hàng, tên hàng, mô tả, ĐV) và HĐ2(Số, mã hàng, số lượng)"},
+        {q: "Lược đồ quan hệ có dạng nào ?", a: "R(a1,a2,…an)"},
+        {q: "Sơ đồ sau sai ở đâu (câu 51)?", a: "bản số"},
+        {q: "Lược đồ ĐONĐATHANG đạt chuẩn cao nhất là ?", a: "1NF"},
+        {q: "Lược đồ ĐONĐAT1 đạt chuẩn cao nhất là ?", a: "2NF"},
+        {q: "Tách lược đồ HĐ đạt 3NF ?", a: "HĐ1(Số, Ngày, mã Khách) và HĐ2(mã Khách, tên khách, Địa chỉ"},
+        {q: "Lược đồ DONĐATHANG(Số, mã hàng, số lượng, giá) đạt chuẩn?", a: "2NF"},
+        {q: "Thiết kế hướng chức năng theo quan điểm nào?", a: "chức năng"},
+        {q: "Thành quả của mỗi hoạt động thiết kế là?", a: "đặc tả"},
+        {q: "Thiết kế hướng đối tượng nhìn nhận hệ thống là?", a: "đối tượng"},
+        {q: "Thiết kế kiểm soát đảm bảo vấn đề gì?", a: "toàn vẹn dữ liệu"},
+        {q: "Thiết kế thủ tục mô tả cái gì?", a: "các thuật giải"},
+        {q: "Lược đồ ĐONĐAT2 đạt chuẩn cao nhất là ?", a: "3NF"},
+        {q: "Lược đồ PHIEUXUAT(Số, ngày, mã khách, mã kho) đạt chuẩn?", a: "3NF"},
+        {q: "Lược đồ DONĐATHANG(Số, mã hàng, số lượng) đạt chuẩn?", a: "3NF"},
+        {q: "Tách lược đồ HOAĐON đạt 1NF:", a: "HĐ1(Số, Ngày,mã Khách, tên khách, Địa chỉ) và HĐ2(Số, mã hàng, tên hàng, mô tả, ĐV, số lượng)"},
+        {q: "Tách lược đồ HĐ(Số, ngày, mã Khách, mã kho) đạt 3NF ?", a: "HĐ(Số, Ngày, mã Khách, mã kho)"},
+        {q: "Phương pháp cấu trúc làm mịn kiến trúc theo cách nào?", a: "từ trên xuống"},
+        {q: "Thiết kế cho phép thực hiện về mặt nào ?", a: "vật lý"},
+        {q: "Thiết kế giao diện tập trung quản lý cái gì ?", a: "liên kết thủ tục"},
+        {q: "Một lược đồ quan hệ bao gồm những thành phần nào ?", a: "tên, danh sách thuộc tính, thuộc tính khóa"},
+        {q: "Tách lược đồ HĐ(Số, mã hàng, số lượng, giá) đạt 3NF ?", a: "HĐ1(Số, số lượng) và HĐ2(mã hàng, giá)"},
+        {q: "Lược đồ DONĐATHANG(mã hàng, tên hàng, mô tả...) đạt chuẩn?", a: "2NF"},
+        {q: "Sơ đồ luồng dữ liệu hệ thống nhận được từ mô hình nào?", a: "sơ đồ tiến trình nghiệp vụ"},
+        {q: "Thiết kế hạ tầng kỹ thuật quan tâm đến?", a: "yêu cầu hệ thống kỹ thuật"},
+        {q: "Mô-đun ghép nối chặt chẽ nếu sử dụng?", a: "dùng các biến chung và có trao đổi các thông tin điều khiển"},
+        {q: "Thiết kế dữ liệu tập trung vào?", a: "cấu trúc dữ liệu"},
+        {q: "Độ thích nghi tối ưu thì thành phần phải có tính chất?", a: "tự chứa"},
+        {q: "Thiết kế dễ thích nghi có quan hệ rõ ràng giữa?", a: "lược đồ cấu trúc và dạng của sơ đồ luồng dữ liệu"},
+        {q: "Thiết kế chương trình và đặc tả mô-đun quan tâm đến?", a: "thành phần cấu trúc chính của chương trình."},
+        {q: "Hai hướng thiết kế thông dụng?", a: "Hướng chức năng và đối tượng"},
+        {q: "Lược đồ DONĐATHANG(... tổng tiền) đạt chuẩn cao nhất?", a: "2NF"},
+        {q: "Bốn tính chất cơ bản của mô-đun là?", a: "Vào/ra, Chức năng, Cơ chế, Dữ liệu cục bộ"},
+        {q: "Hiển thị thông tin nên dùng cách hiển thị?", a: "tương tự"},
+        {q: "Phương pháp tinh chỉnh từng bước chú ý đến?", a: "Cả 2 khía cạnh dữ liệu và xử lý"},
+        {q: "Giao diện người- máy là gì?", a: "cơ chế"},
+        {q: "Thiết kế giao diện chuyển chức năng từ sơ đồ nào?", a: "sơ đồ luồng dữ liệu hệ thống"},
+        {q: "Sơ đồ khối bao gồm?", a: "Hình thoi (điều kiện), Hình chữ nhật (chức năng), Đường thẳng có hướng"},
+        {q: "Xác định phương tiện đặc tả chức năng?", a: "Bảng và cây quyết định"},
+        {q: "Sơ đồ luồng dữ liệu mức dưới đỉnh cho phép vẽ?", a: "Vẽ kho dữ liệu có quan hệ trực tiếp với nhiều chức năng con"},
+        {q: "Quy trình xây dựng sơ đồ luồng dữ liệu mức dưới đỉnh?", a: "c, b, a (Khoanh vùng -> Dựa vào phân cấp -> Vẽ lại đường liên kết)"},
+        {q: "Thiết kế hướng chức năng dùng gì để thống nhất dữ liệu?", a: "từ điển dữ liệu"},
+        {q: "Nguyên tắc quan trọng nhất của Shneiderman?", a: "nhất quán"},
+        {q: "Các cấu phần của giao diện bao gồm:", a: "Tiêu đề, các cửa sổ và các nút lệnh"},
+        {q: "Đặc tả bằng phương trình toán học?", a: "Tên chức năng, đầu vào, đầu ra, mô tả nội dung xử lý"},
+        {q: "Quy trình xây dựng sơ đồ luồng dữ liệu mức đỉnh?", a: "c, b, a (Làm mịn -> Thêm kho -> Thêm luồng)"},
+        {q: "Sơ đồ luồng dữ liệu cho phép vẽ (câu 96)?", a: "Vẽ cùng 1 kho dữ liệu ở nhiều nơi"},
+        {q: "Đặc trưng của thiết kế hướng đối tượng?", a: "không có vùng dữ liệu dùng chung"},
+        {q: "Trong đặc tả mô-đun thì mô-đun là gì?", a: "Chương trình con thủ tục, hàm hoặc tập hợp câu lệnh"},
+        {q: "Trong phạm trù vào dữ liệu, cần làm gì?", a: "Tối thiểu số hành động đưa vào mà người dùng cần thực hiện"},
+        {q: "Ba cặp phạm trù thiết kế giao diện là?", a: "Tương tác chung, Hiển thị thông tin, Vào dữ liệu"},
+        {q: "Bản chất của Sơ đồ luồng dữ liệu là gì?", a: "mô tả các chức năng của hệ thống theo tiến trình"},
+        {q: "Đặc tả chức năng bằng ngôn ngữ có cấu trúc?", a: "Động từ hành động (tiến trình), Danh từ (dữ liệu), Ba cấu trúc điển hình"},
+        {q: "Sơ đồ luồng dữ liệu cho phép vẽ (câu 103)?", a: "vẽ cùng 1 tác nhân ngoài ở nhiều nơi"}
+    ] },
+      { id: 'tk-web', title: 'Thiet Ke Web', color: '#1a73e8', placeholder: 'Tim kiem mon Thiet Ke Web...', items: [
             {q: "Cổng nào sau đây dùng cho việc gửi nhận các trang web?", a: "80"},
             {q: "Phát biểu nào sau đây đúng?", a: "Tất cả các Web Server đều hiểu và chạy được các file *.htm và *.html."},
             {q: "URL là viết tắt của cụm từ nào sau đây?", a: "Uniform Resource Location"},
@@ -136,82 +365,139 @@
             {q: "Trình duyệt KHÔNG thực hiện nhiệm vụ sau?", a: "Truy cập cơ sở dữ liệu trên máy chủ"},
             {q: "Website là gì?", a: "Website là bộ tập hợp các trang web có liên quan với nhau."},
             {q: "DNS là từ viết tắt của cụm từ nào sau đây?", a: "Domain Name Server"},
-            {q: "Phát biểu nào sau đây không đúng về trang web?", a: "Giữa các trang web có các siêu liên kết (hyperlink), và chỉ cho phép người sử dụng có thể di chuyển từ trang này sang trang khác"},
+            {q: "Phát biểu nào sau đây không đúng về trang web?", a: "Giữa các trang web có các siêu liên kết (hyperlink), và chỉ cho phép người sử dụng có thể di chuyển từ trang này sang trang khác trong cùng một website"},
             {q: "Phương án nào sau đây KHÔNG là ưu điểm của website tĩnh?", a: "Người dùng có thể tương tác với website"},
             {q: "Giao thức nào sau đây là KHÔNG giao thức truyền tải thư tín điện tử?", a: "FTP"},
             {q: "Giao thức nào được sử dụng để truyền tải siêu văn bản?", a: "HTTP"},
-            {q: "Logo KHÔNG nên đặt ở vị trí nào?", a: "Phải"},
-            {q: "Hệ màu nào được sử dụng phổ biến trong thiết kế website?", a: "RGB"}
-            // (Bạn có thể thêm tiếp các câu Web vào đây)
-        ],
-        os: [
-            {q: "Thành phần nào không phải là thành phần của hệ điều hành?", a: "Chương trình điều khiển thiết bị"},
-            {q: "Hệ điều hành thực hiện ở chế độ?", a: "Độc quyền"},
-            {q: "Tiến trình là gì (Process)?", a: "Chương trình đang thực hiện"},
-            {q: "Điều phối FIFO có nghĩa là?", a: "Vào trước ra trước"},
-            {q: "Trong xử lý ngắt của IBM PC, ngắt kiểm tra chương trình là?", a: "INT 20"},
-            {q: "Kích thước một sector thường là bao nhiêu?", a: "512B"},
-            {q: "Unix và Linux là gì?", a: "Hệ điều hành đa nhiệm nhiều người dùng"}
-            // (Dữ liệu OS bạn đã có ở trên)
-        ],
-        httt: [
-            {q: "Mức độ trừu tượng hóa logic trả lời cho câu hỏi nào?", a: "What?"},
-            {q: "Tiếp cận hướng cấu trúc hướng vào việc gì?", a: "Cải tiến cấu trúc chương trình dựa trên việc mô-đun hóa"},
-            {q: "Bản chất của việc phát triển một hệ thống thông tin là?", a: "Là thiết kế lại tổ chức"},
-            {q: "Sơ đồ ngữ cảnh sai ở đâu ?", a: "Kho dữ liệu"}
-            // (Dữ liệu HTTT bạn đã có ở trên)
-        ],
-        security: [
-            {q: "Bộ phận nào không thuộc CIA Triad (An ninh mạng tổng quát)?", a: "Các tệp cơ sở dữ liệu"},
-            {q: "Điểm yếu nhất đe dọa an toàn thông tin?", a: "Quy trình và con người"},
-            {q: "WPA2 được sử dụng để đảm bảo an ninh cho mạng:", a: "Wi-fi"},
-            {q: "Giải mã Caesar C=HQFUBSWHG WHAW?", a: "ENCRYPTED TEXT"},
-            {q: "SHA-1 tạo thông điệp băm có kích thước:", a: "160 bits"}
-            // (Dữ liệu Bảo mật bạn đã có ở trên)
-        ]
-    };
-
-    // Bổ sung dữ liệu đầy đủ từ lịch sử chat (Tôi tóm lược, bạn hãy dán thêm vào các mảng trên nếu cần)
-    // Để tiết kiệm không gian ở đây, tôi chỉ để các câu tiêu biểu. 
-
-    let currentSubject = 'web';
-
-    function switchSubject(subject) {
-        currentSubject = subject;
-        
-        // Cập nhật giao diện nút
-        document.querySelectorAll('.tab-button').forEach(btn => btn.classList.remove('active'));
-        event.target.classList.add('active');
-        
-        // Cập nhật tiêu đề
-        const titles = {web: 'Thiết Kế Website', os: 'Nguyên Lý Hệ Điều Hành', httt: 'Phân Tích Thiết Kế HTTT', security: 'An Ninh & Bảo Mật Dữ Liệu'};
-        document.getElementById('currentSubjectTitle').innerText = titles[subject];
-        
-        // Xóa ô tìm kiếm và render lại
-        document.getElementById('searchInput').value = '';
-        render(allData[subject]);
+            {q: "Phát biểu nào sau đây SAI về thương mại điện tử (TMĐT)?", a: "Thương mại điện tử là hoạt động mua-bán sản phẩm (hoặc dịch vụ) tại các chợ và siêu thị"},
+            {q: "Bước đầu tiên của quy trình xây dựng một website gì?", a: "Xác định yêu cầu và phân tích yêu cầu"},
+            {q: "Hệ thống điều hướng chính thường xuất hiện ở thành phần giao diện nào?", a: "Phần đầu trang (Website Header)"},
+            {q: "Quy trình xây dựng một website có bao nhiêu bước?", a: "6"},
+            {q: "Nội dung của trang web là?", a: "Các thành phần có trong trang web. Bao gồm văn bản, hình ảnh, âm thanh, video clip, ảnh động, các file"},
+            {q: "Phát biểu nào sau đây sai?", a: "Liên kết theo đường thẳng (tuyến tính) là loại liên kết phù hợp cho các website hướng người dùng đi theo thứ tự mà họ mong muốn"},
+            {q: "Việc xác định đối tượng độc giả của website là ai, được thực hiện ở bước nào của quy trình thiết kế website?", a: "Xác định yêu cầu và phân tích yêu cầu"},
+            {q: "Website thương mại điện tử là gì?", a: "Website thương mại điện tử là trang thông tin điện tử được thiết lập để phục vụ một phần hoặc toàn bộ quy trình của hoạt động mua bán hàng hóa hay cung ứng dịch vụ..."},
+            {q: "CTA là viết tắt của cụm từ nào?", a: "Call to Action"},
+            {q: "Thành phần nào là dấu hiệu giúp người đọc nhận biết đã đọc hết nội dung của trang web đang được mở?", a: "Phần chân trang (Website Footer)"},
+            {q: "Công cụ hỗ trợ tìm kiếm thường xuất hiện ở vị trí nào trên trang web?", a: "Phần đầu trang (Website Header)"},
+            {q: "Phát biểu nào sau đây KHÔNG ĐÚNG về chiến lược thiết kế website?", a: "Tăng tốc độ truy cập bằng cách tăng việc sử dụng hình ảnh và dữ liệu đa phương tiện (multimedia)"},
+            {q: "Đâu là ví dụ cho ý tưởng thiết kế hướng đến người sử dụng?", a: "Cho phép người dùng tăng kích thước chữ theo nhu cầu sử dụng"},
+            {q: "Logo KHÔNG nên đặt ở vị trí nào trên phần đầu của trang web?", a: "Phải"},
+            {q: "Thành phần Saturation trong chế độ màu HSB có ý nghĩa là gì?", a: "Độ bão hoà màu"},
+            {q: "Yếu tố nào sau đây KHÔNG ảnh hưởng khi lựa chọn màu sắc trong thiết kế web?", a: "Trình độ học vấn"},
+            {q: "Nên sử dụng gam màu nào khi muốn thể hiện ý tưởng tươi vui, cởi mở, kích động, thu hút người xem", a: "Gam màu nóng"},
+            {q: "CMYK là viết tắt của các màu nào?", a: "Cyan, Magenta, Yellow, Black"},
+            {q: "Chế độ màu nào sau đây thích hợp với chỉnh sửa ảnh kỹ thuật số?", a: "RGB"},
+            {q: "Phương pháp phối màu nào sau đây sử dụng 2 màu?", a: "Tương phản"},
+            {q: "Phương pháp phối màu nào sau đây có độ tương phản cao nhất?", a: "Tương phản"},
+            {q: "Hệ màu nào KHÔNG được sử dụng trong thiết kế?", a: "RYB"},
+            {q: "HSB là viết tắt của các thông số nào?", a: "Hue, Saturation, Brightness"},
+            {q: "Phương pháp phối màu nào sau đây sử dụng 3 màu?", a: "Tương đồng"},
+            {q: "Tỉ lệ vàng có giá trị bao nhiêu?", a: "1.618"},
+            {q: "Với hình chữ nhật có kích thước 1000px được áp dụng tỉ lệ vàng thì hình chữ nhật con bên trong có kích thước lớn nhất là bao nhiêu?", a: "616"},
+            {q: "Màu nào sau đây thuộc gam màu trung tính?", a: "Đen"},
+            {q: "Bánh xe màu cơ bản có bao nhiêu màu?", a: "12"},
+            {q: "Màu nào sau đây thuộc gam màu lạnh?", a: "Xanh nước biển"},
+            {q: "Phương pháp phối màu nào sau đây sử dụng ít hơn 3 màu?", a: "Vô sắc"},
+            {q: "Màu nào sau đây thuộc gam màu nóng?", a: "Vàng"},
+            {q: "Bánh xe màu được tạo nên từ những màu cơ bản nào?", a: "Red, Yellow, Blue"},
+            {q: "Cặp màu nào sau đây có độ tương phản cao nhất?", a: "Vàng – Xanh nước biển"},
+            {q: "Nếu tiêu đề chính có kích thước chữ 20pt thì nội dung có kích thước chữ là bao nhiêu pt nếu áp dụng tỉ lệ vàng?", a: "12"},
+            {q: "Nên sử dụng gam màu nào khi muốn thể hiện sự tươi tắn, toả sáng, gợi cảm giác mát mẻ, nhẹ nhàng?", a: "Gam màu lạnh"},
+            {q: "Kết hợp cặp màu nào sau đây sẽ tạo ra màu tím?", a: "Đỏ (red) + Xanh (blue)"},
+            {q: "Cặp màu nào sau đây không phải là cặp màu bổ sung?", a: "Trắng-Đỏ"},
+            {q: "Hệ màu nào tương thích với quang phổ mực in?", a: "CMYK"},
+            {q: "Phát biểu nào sau đây SAI?", a: "Các nền văn hoá khác nhau có chung quan điểm về ý nghĩa và cách sử dụng màu sắc."},
+            {q: "Phương pháp phối màu nào sau đây chỉ sử dụng 1 màu?", a: "Đơn sắc"},
+            {q: "Công cụ nào sau đây tạo ra các vùng chọn có dạng là các khối hình học bất kỳ?", a: "Polygon Lasso Tool"},
+            {q: "Công cụ nào sau đây không dùng để tô màu?", a: "Eraser Tool"},
+            {q: "Thao tác nào sau đây gộp tất cả các lớp có trong file Photoshop thành 1 lớp background?", a: "Flatten Image"},
+            {q: "Công cụ nào cho phép tạo ra các vùng chọn có hình dáng tự do?", a: "Lasso Tool"},
+            {q: "Bản vẽ phác thảo website là?", a: "Sketch"},
+            {q: "Công cụ nào sau đây cho phép thiết lập kiểu chữ mỹ thuật cho văn bản?", a: "Wrap Text"},
+            {q: "Công cụ nào sau đây cho phép nhập một đoạn nội dung văn bản?", a: "Type Tool"},
+            {q: "Nhóm công cụ nào sau đây cho phép tạo vùng chọn có dạng hình học cơ bản?", a: "Nhóm công cụ Marquee"},
+            {q: "Thao tác nào cho phép dán 2 hay nhiều lớp thành 1 lớp?", a: "Merge Visible"},
+            {q: "Nhóm bộ lọc nào cho phép thực hiện các thao tác làm nhoè ảnh?", a: "Blur"},
+            {q: "Nhóm bộ lọc nào cho phép thực hiện các thao tác làm biến dạng hình học một hình ảnh?", a: "Distort"},
+            {q: "Chế độ màu nào sau đây chỉ hỗ trợ thiết kế với các tông màu đen, xám, trắng?", a: "GrayScale"},
+            {q: "Chế độ hoà trộn nào sau đây được dùng để chỉnh cho bức ảnh tối hơn?", a: "Multiply"},
+            {q: "Công cụ nào cho phép nhập nội dung văn bản theo chiều dọc?", a: "Vertical Type Tool"},
+            {q: "Đơn vị đo độ phân giải hình ảnh là?", a: "ppi"},
+            {q: "Công cụ nào sau đây dùng để tô màu chuyển sắc?", a: "Gradient Tool"},
+            {q: "Khi khởi tạo file Photoshop, mục nào sau đây dùng để thiết lập hướng in của ảnh?", a: "Orientation"},
+            {q: "Công cụ nào sau đây cho phép cắt hình ảnh trong Photoshop thành các hình ảnh nhỏ hơn?", a: "Slice Tool"},
+            {q: "Tổ hợp phím nào sau đây sao chép và nhân bản layer?", a: "Ctrl+J"},
+            {q: "Thao tác nào sau đây xóa tất cả các slice đang có?", a: "View> Clear Slices"},
+            {q: "Tổ hợp phím nào được sử dụng để chuyển layer xuống dưới layer khác?", a: "Ctrl+["},
+            {q: "Thẻ <caption> có chức năng gì?", a: "Tạo tiêu đề cho toàn bộ bảng, tiêu đề được căn giữa"},
+            {q: "Thẻ nào sau đây dùng để ngắt một đoạn văn bản và xuống một dòng mới?", a: "br"},
+            {q: "Bản thiết kế có độ trung thực cao nhất... có các hiệu ứng đi kèm, người dùng có thể tương tác... là?", a: "Prototype"},
+            {q: "Thao tác nào sau đây cho phép tạo nhát cắt từ layer?", a: "Layer > New Layer-based Slice"},
+            {q: "Khi có bức ảnh có độ tương phản cao giữa nền và nhân vật... Công cụ nào sau đây cho phép tạo vùng chọn dễ dàng hơn?", a: "Quick Selection Tool"},
+            {q: "Hệ màu nào được sử dụng phổ biến trong thiết kế website?", a: "RGB"},
+            {q: "Đoạn mã lệnh nào sau đây thiết lập bảng mã Unicode để hiển thị Tiếng Việt cho nội dung trang web?", a: "meta http-equiv=\"Content-Type\" content=\"text/html; charset=UTF-8\""},
+            {q: "Thẻ nào sau đây tương đương thẻ b?", a: "strong"},
+            {q: "Lựa chọn nào khi xuất bản ảnh cho web sẽ cho phép tạo ra trang HTML với bố cục layout theo các slice đã cắt, nhưng hình ảnh không được hiển thị...?", a: "HTML only"}
+        ] }
+    ];
+    function norm(v){ return String(v || '').toLowerCase(); }
+    function renderList(host, list){
+      host.innerHTML = '';
+      for(let i=0;i<list.length;i++){
+        const it = list[i];
+        const div = document.createElement('div');
+        div.className = 'item';
+        const q = document.createElement('div');
+        q.className = 'q';
+        q.textContent = 'Cau ' + (i+1) + ': ' + it.q;
+        const a = document.createElement('div');
+        a.className = 'a';
+        a.textContent = 'Đáp án: ' + it.a;
+        div.appendChild(q);
+        div.appendChild(a);
+        host.appendChild(div);
+      }
     }
-
-    function render(data) {
-        const container = document.getElementById('quizContent');
-        container.innerHTML = '';
-        data.forEach((item, index) => {
-            const div = document.createElement('div');
-            div.className = 'quiz-card';
-            div.innerHTML = `<span class="q-text">Câu ${index+1}: ${item.q}</span><span class="a-text">Đáp án: ${item.a}</span>`;
-            container.appendChild(div);
-        });
+    function build(){
+      const nav = document.getElementById('nav');
+      const app = document.getElementById('app');
+      subjects.forEach(s => {
+        const link = document.createElement('a');
+        link.href = '#'+s.id;
+        link.textContent = s.title;
+        nav.appendChild(link);
+      });
+      subjects.forEach(s => {
+        const sec = document.createElement('section');
+        sec.className = 'subject';
+        sec.id = s.id;
+        sec.style.setProperty('--c', s.color);
+        const h2 = document.createElement('h2');
+        h2.textContent = s.title;
+        const inp = document.createElement('input');
+        inp.className = 'search';
+        inp.placeholder = s.placeholder;
+        const list = document.createElement('div');
+        const empty = document.createElement('div');
+        empty.className = 'empty';
+        empty.textContent = 'Khong tim thay cau hoi phu hop.';
+        function filter(){
+          const k = norm(inp.value.trim());
+          const out = !k ? s.items : s.items.filter(x => norm(x.q).includes(k) || norm(x.a).includes(k));
+          renderList(list, out);
+          empty.style.display = out.length ? 'none' : 'block';
+        }
+        inp.addEventListener('input', filter);
+        sec.appendChild(h2);
+        sec.appendChild(inp);
+        sec.appendChild(list);
+        sec.appendChild(empty);
+        app.appendChild(sec);
+        filter();
+      });
     }
-
-    function filterData() {
-        const keyword = document.getElementById('searchInput').value.toLowerCase();
-        const filtered = allData[currentSubject].filter(i => i.q.toLowerCase().includes(keyword) || i.a.toLowerCase().includes(keyword));
-        render(filtered);
-    }
-
-    // Mặc định chạy môn đầu tiên
-    render(allData.web);
-</script>
-
+    build();
+  </script>
 </body>
 </html>
